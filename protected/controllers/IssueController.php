@@ -139,6 +139,7 @@ class IssueController extends Controller
 		));
        
 		Yii::trace(CVarDumper::dumpAsString($dataProvider),'monkey');
+		Yii::trace(CVarDumper::dumpAsString($dataProvider->modelClass),'monkey2');
 
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -224,5 +225,9 @@ class IssueController extends Controller
 	}
         return $this->_project;
      }
+
+	public function get_project() {
+	  return $this->_project;
+	}
 
 }

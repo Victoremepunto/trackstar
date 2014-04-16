@@ -7,11 +7,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Issue', 'url'=>array('create','pid' => 1)),
-	array('label'=>'Manage Issue', 'url'=>array('admin')),
+	array('label'=>'Create Issue', 'url'=>array('create','pid' => $this->get_project()->id)),
+	array('label'=>'Manage Issue', 'url'=>array('admin','pid' => $this->get_project()->id)),
 );
 
-Yii::trace(CVarDumper::dumpAsString($this),'monk');
 ?>
 
 <h1>Issues</h1>
