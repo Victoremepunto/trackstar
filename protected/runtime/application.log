@@ -1,0 +1,58 @@
+2014/04/15 23:29:56 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "("
+LINE 5:  "create_user_id" int(11) DEFAULT NULL,
+                             ^. The SQL statement executed was: CREATE TABLE "tbl_project" (
+	"id" serial NOT NULL PRIMARY KEY,
+	"description" text NOT NULL,
+	"create_time" timestamp DEFAULT NULL,
+	"create_user_id" int(11) DEFAULT NULL,
+	"update_time" timestamp DEFAULT NULL,
+	"update_user_id" int(11) DEFAULT NULL
+).
+2014/04/16 01:53:30 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "`"
+LINE 4:  PRIMARY KEY(`user_id`,`project_id`)
+                     ^. The SQL statement executed was: CREATE TABLE "tbl_project_user_assignment" (
+	"project_id" int NOT NULL,
+	"user_id" int NOT NULL,
+	PRIMARY KEY(`user_id`,`project_id`)
+).
+2014/04/16 01:54:14 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "'user_id'"
+LINE 4:  PRIMARY KEY('user_id','project_id')
+                     ^. The SQL statement executed was: CREATE TABLE "tbl_project_user_assignment" (
+	"project_id" int NOT NULL,
+	"user_id" int NOT NULL,
+	PRIMARY KEY('user_id','project_id')
+).
+2014/04/16 01:55:25 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[0A000]: Feature not supported: 7 ERROR:  cannot truncate a table referenced in a foreign key constraint
+DETAIL:  Table "tbl_issue" references "tbl_user".
+HINT:  Truncate table "tbl_issue" at the same time, or use TRUNCATE ... CASCADE.. The SQL statement executed was: TRUNCATE TABLE "tbl_user".
+2014/04/16 01:56:59 [error] [php] Missing argument 2 for CDbMigration::dropForeignKey(), called in /home/guybrush/Workspace/PHP/Yii/trackstar/protected/migrations/m140415_233822_create_issue_user_and_assignment_tables.php on line 67 and defined (/home/guybrush/yii/framework/db/CDbMigration.php:374)
+Stack trace:
+#0 /home/guybrush/yii/framework/cli/commands/MigrateCommand.php(410): m140415_233822_create_issue_user_and_assignment_tables->down()
+#1 /home/guybrush/yii/framework/cli/commands/MigrateCommand.php(145): MigrateCommand->migrateDown()
+#2 unknown(0): MigrateCommand->actionDown()
+#3 /home/guybrush/yii/framework/console/CConsoleCommand.php(172): ReflectionMethod->invokeArgs()
+#4 /home/guybrush/yii/framework/console/CConsoleCommandRunner.php(71): MigrateCommand->run()
+#5 /home/guybrush/yii/framework/console/CConsoleApplication.php(92): CConsoleCommandRunner->run()
+#6 /home/guybrush/yii/framework/base/CApplication.php(180): CConsoleApplication->processRequest()
+#7 /home/guybrush/yii/framework/yiic.php(33): CConsoleApplication->run()
+#8 /home/guybrush/Workspace/PHP/Yii/trackstar/protected/yiic.php(7): require_once()
+#9 /home/guybrush/Workspace/PHP/Yii/trackstar/protected/yiic(4): require_once()
+
+2014/04/16 15:21:57 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "project_id" does not exist
+LINE 1: DELETE FROM "tbl_user" WHERE project_id=1 and project_user_i...
+                                     ^. The SQL statement executed was: DELETE FROM "tbl_user" WHERE project_id=1 and project_user_id=1.
+2014/04/16 15:23:31 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "One"
+LINE 1: DELETE FROM "tbl_user" WHERE username=`User One`
+                                                    ^. The SQL statement executed was: DELETE FROM "tbl_user" WHERE username=`User One`.
+2014/04/16 15:24:08 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "Two"
+LINE 1: DELETE FROM "tbl_user" WHERE username=`User Two'
+                                                    ^. The SQL statement executed was: DELETE FROM "tbl_user" WHERE username=`User Two'.
+2014/04/16 15:24:30 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "project_user_id" does not exist
+LINE 1: ...l_project_user_assignment" WHERE project_id=1 and project_us...
+                                                             ^. The SQL statement executed was: DELETE FROM "tbl_project_user_assignment" WHERE project_id=1 and project_user_id=1.
+2014/04/16 15:25:08 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  insert or update on table "tbl_project_user_assignment" violates foreign key constraint "fk_user_project"
+DETAIL:  Key (user_id)=(1) is not present in table "tbl_user".. The SQL statement executed was: INSERT INTO "tbl_project_user_assignment" ("project_id", "user_id") VALUES (:project_id, :user_id).
+2014/04/16 15:25:32 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  insert or update on table "tbl_project_user_assignment" violates foreign key constraint "fk_user_project"
+DETAIL:  Key (user_id)=(1) is not present in table "tbl_user".. The SQL statement executed was: INSERT INTO "tbl_project_user_assignment" ("project_id", "user_id") VALUES (:project_id, :user_id).
+2014/04/16 15:28:00 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  insert or update on table "tbl_project_user_assignment" violates foreign key constraint "fk_user_project"
+DETAIL:  Key (user_id)=(1) is not present in table "tbl_user".. The SQL statement executed was: INSERT INTO "tbl_project_user_assignment" ("project_id", "user_id") VALUES (:project_id, :user_id).
