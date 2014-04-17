@@ -20,4 +20,29 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+
+	public function accessRules() {
+	  return array(
+	    array('allow', // Allow authenticated users to perform 'index' and 'view' actions
+		  'controllers' => array('issue', 'project', 'user'),
+		  'actions' => array('index','view','adduser'),
+		  'users' => array('@'),
+	    ),
+	    array('allow', // Allow authenticated users to perform 'create' and 'update' actions
+		  'controllers' => array('issue', 'project', 'user'),
+		  'actions' => array('create','update'),
+		  'users' => array('@'),
+	    ),
+	    array('allow', // Allow admin user to perform 'admin' and 'delete' actions
+		  'controllers' => array('issue', 'project', 'user'),
+		  'actions' => array('admin','delete'),
+		  'users' => array('admin'),
+	    ),
+	    array('allow', // Deny all users 
+		  'controllers' => array('issue', 'project', 'user'),
+		  'users' => array('*'),
+	    ),
+	  );
+	}
+
 }

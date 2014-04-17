@@ -21,6 +21,9 @@
  */
 class User extends CActiveRecord
 {
+
+	public $password_repeat;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -37,13 +40,15 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, email, password', 'required'),
-			array('create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
-			array('username, email, password', 'length', 'max'=>255),
-			array('last_login_time, create_time, update_time', 'safe'),
+			array('username, email, password, password_repeat', 'required'),
+			array('username, email, password, password_repeat', 'length', 'max'=>255),
+//			array('last_login_time, create_time, update_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, username, email, password, last_login_time, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
+			array('email,username','unique'),
+			array('email','email'),
+			array('password','compare'),
 		);
 	}
 
@@ -122,4 +127,37 @@ class User extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+
+	public function behaviors() {
+
+		return array(
+			'CTimeStampBehavior' => array(
+				'class' => 'application.components.MyCTimestampBehavior',
+				'createAttribute' => 'create_time',
+				'updateAttribute' => 'update_time',
+				'setUpdateOnCreate' => true,
+			)
+		);
+
+	}
+
+	public function beforeSave() {
+
+          if (empty($this->last_login_time))
+	    $this->last_login_time = null;
+
+	  return parent::beforeSave();
+	}
+
+	public function afterValidate() {
+		if (!$this->hasErrors())
+			$this->password=md5($this->password);
+	}
+
+	public function validatePassword($p) {
+	  return md5($p) === $this->password;
+	}
+
+
 }

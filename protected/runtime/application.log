@@ -56,3 +56,37 @@ DETAIL:  Key (user_id)=(1) is not present in table "tbl_user".. The SQL statemen
 DETAIL:  Key (user_id)=(1) is not present in table "tbl_user".. The SQL statement executed was: INSERT INTO "tbl_project_user_assignment" ("project_id", "user_id") VALUES (:project_id, :user_id).
 2014/04/16 15:28:00 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ERROR:  insert or update on table "tbl_project_user_assignment" violates foreign key constraint "fk_user_project"
 DETAIL:  Key (user_id)=(1) is not present in table "tbl_user".. The SQL statement executed was: INSERT INTO "tbl_project_user_assignment" ("project_id", "user_id") VALUES (:project_id, :user_id).
+2014/04/17 04:49:21 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42703]: Undefined column: 7 ERROR:  column "name" referenced in foreign key constraint does not exist. The SQL statement executed was: ALTER TABLE "tbl_auth_assignment" ADD CONSTRAINT "fk_auth_assignment_itemname" FOREIGN KEY ("itemname") REFERENCES "tbl_user" ("name").
+2014/04/17 04:50:44 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  foreign key constraint "fk_auth_assignment_userid" cannot be implemented
+DETAIL:  Key columns "userid" and "id" are of incompatible types: character varying and integer.. The SQL statement executed was: ALTER TABLE "tbl_auth_assignment" ADD CONSTRAINT "fk_auth_assignment_userid" FOREIGN KEY ("userid") REFERENCES "tbl_user" ("id").
+2014/04/17 05:16:08 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "not"
+LINE 1: ...TABLE "tbl_user" ALTER COLUMN "id" TYPE varchar(64) not null
+                                                               ^. The SQL statement executed was: ALTER TABLE "tbl_user" ALTER COLUMN "id" TYPE varchar(64) not null.
+2014/04/17 05:16:27 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  foreign key constraint "fk_issue_owner" cannot be implemented
+DETAIL:  Key columns "owner_id" and "id" are of incompatible types: integer and character varying.. The SQL statement executed was: ALTER TABLE "tbl_user" ALTER COLUMN "id" TYPE varchar(64).
+2014/04/17 05:30:54 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42704]: Undefined object: 7 ERROR:  unrecognized configuration parameter "foreign_key_checks". The SQL statement executed was: SET foreign_key_checks = 0;.
+2014/04/17 05:35:02 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  foreign key constraint "fk_issue_requester" cannot be implemented
+DETAIL:  Key columns "requester_id" and "id" are of incompatible types: integer and character varying.. The SQL statement executed was: ALTER TABLE "tbl_user" ALTER COLUMN "id" TYPE varchar(64).
+2014/04/17 05:36:00 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  foreign key constraint "fk_user_project" cannot be implemented
+DETAIL:  Key columns "user_id" and "id" are of incompatible types: integer and character varying.. The SQL statement executed was: ALTER TABLE "tbl_user" ALTER COLUMN "id" TYPE varchar(64).
+2014/04/17 05:38:09 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  foreign key constraint "fk_issue_owner" cannot be implemented
+DETAIL:  Key columns "owner_id" and "id" are of incompatible types: integer and character varying.. The SQL statement executed was: ALTER TABLE "tbl_issue" ADD CONSTRAINT "fk_issue_owner" FOREIGN KEY ("owner_id") REFERENCES "tbl_user" ("id") ON DELETE CASCADE ON UPDATE RESTRICT.
+2014/04/17 05:44:57 [error] [php] include(m140417_031257_alter_column_user_id.php): failed to open stream: No such file or directory (/home/guybrush/yii/framework/YiiBase.php:432)
+Stack trace:
+#0 /home/guybrush/yii/framework/cli/commands/MigrateCommand.php(429): spl_autoload_call()
+#1 /home/guybrush/yii/framework/cli/commands/MigrateCommand.php(384): MigrateCommand->instantiateMigration()
+#2 /home/guybrush/yii/framework/cli/commands/MigrateCommand.php(109): MigrateCommand->migrateUp()
+#3 unknown(0): MigrateCommand->actionUp()
+#4 /home/guybrush/yii/framework/console/CConsoleCommand.php(172): ReflectionMethod->invokeArgs()
+#5 /home/guybrush/yii/framework/console/CConsoleCommandRunner.php(71): MigrateCommand->run()
+#6 /home/guybrush/yii/framework/console/CConsoleApplication.php(92): CConsoleCommandRunner->run()
+#7 /home/guybrush/yii/framework/base/CApplication.php(180): CConsoleApplication->processRequest()
+#8 /home/guybrush/yii/framework/yiic.php(33): CConsoleApplication->run()
+#9 /home/guybrush/Workspace/PHP/Yii/trackstar/protected/yiic.php(7): require_once()
+#10 /home/guybrush/Workspace/PHP/Yii/trackstar/protected/yiic(4): require_once()
+
+2014/04/17 05:46:32 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  foreign key constraint "fk_issue_project" cannot be implemented
+DETAIL:  Key columns "project_id" and "id" are of incompatible types: integer and character varying.. The SQL statement executed was: ALTER TABLE "tbl_issue" ADD CONSTRAINT "fk_issue_project" FOREIGN KEY ("project_id") REFERENCES "tbl_project" ("id") ON DELETE CASCADE ON UPDATE RESTRICT.
+2014/04/17 06:02:28 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42P01]: Undefined table: 7 ERROR:  table "tbl_auth_assignment" does not exist. The SQL statement executed was: DROP TABLE "tbl_auth_assignment".
+2014/04/17 07:30:57 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "tbl_auth_assignment_pkey"
+DETAIL:  Key (itemname, userid)=(member, 1) already exists.. The SQL statement executed was: INSERT INTO "tbl_auth_assignment" ("itemname", "userid", "bizrule", "data") VALUES (:itemname, :userid, :bizrule, :data).

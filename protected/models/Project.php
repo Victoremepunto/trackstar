@@ -31,9 +31,9 @@ class Project extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, description', 'required'),
-			array('create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
+			//array('create_user_id, update_user_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
-			array('create_time, update_time', 'safe'),
+			//array('create_time, update_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name, description, create_time, create_user_id, update_time, update_user_id', 'safe', 'on'=>'search'),
@@ -111,14 +111,70 @@ class Project extends CActiveRecord
 		return parent::model($className);
 	}
 
-	protected function beforeSave() {
-		// FIX for PostgreSQL
-		$this->create_time = empty($this->create_time) ? null : $this->create_time;
-		$this->update_time = empty($this->update_time) ? null : $this->update_time;
-		return parent::beforeSave();
+	public function behaviors() {
+
+		return array(
+			'CTimeStampBehavior' => array(
+				'class' => 'application.components.MyCTimestampBehavior',
+				'createAttribute' => 'create_time',
+				'updateAttribute' => 'update_time',
+				'setUpdateOnCreate' => true,
+			)
+		);
 	}
 
 	public function getUserOptions() {
 		return CHtml::listData($this->users,'id','username');
 	}
+
+	public function assignUser($userId, $role)
+   	{
+   		$command = Yii::app()->db->createCommand();
+  		$command->insert('tbl_project_user_assignment', array(
+		   'role'=>$role,
+		   'user_id'=>$userId,
+		   'project_id'=>$this->id,
+		));	
+	}
+
+	 public function removeUser($userId)
+	{
+   		$command = Yii::app()->db->createCommand();
+	        $command->delete(
+   		'tbl_project_user_assignment','user_id=:userId AND project_id=:projectId',
+   		array(':userId'=>$userId,':projectId'=>$this->id));
+   	}
+
+	 public function allowCurrentUser($role)
+	 {
+		   $sql = "SELECT * FROM tbl_project_user_assignment WHERE project_id=:projectId AND user_id=:userId AND role=:role";
+		   $command = Yii::app()->db->createCommand($sql);
+		   $command->bindValue(":projectId", $this->id, PDO::PARAM_INT);
+		   $command->bindValue(":userId", Yii::app()->user->getId(), PDO::PARAM_INT);
+		   $command->bindValue(":role", $role, PDO::PARAM_STR);
+		   return $command->execute()==1;
+  	 }
+
+	    /**
+	    * Returns an array of available roles in which a user can be placed
+  	 when being added to a project
+    	*/
+   	public static function getUserRoleOptions()
+  	 {
+   		return CHtml::listData(Yii::app()->authManager->getRoles(), 'name','name');
+   	}
+		
+	 /*
+	  * Determines whether or not a user is already part of a project
+    	  */
+	public function isUserInProject($user)
+	{
+	$sql = "SELECT user_id FROM tbl_project_user_assignment WHERE project_id=:projectId AND user_id=:userId";
+	$command = Yii::app()->db->createCommand($sql);
+	$command->bindValue(":projectId", $this->id, PDO::PARAM_INT);
+	$command->bindValue(":userId", $user->id, PDO::PARAM_INT);
+	return $command->execute()==1;
+	}
+
+	
 }
